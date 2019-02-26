@@ -1,12 +1,10 @@
-class Test{
-    _p:number
-    constructor(p:number){
-        this._p = p;
-    }
+import "reflect-metadata"; // this shim is required
+import { createExpressServer } from "routing-controllers";
 
-    show():void{
-        console.log(this._p);
-    }
-}
+// creates express app, registers all controller routes and returns you express app instance
+const app = createExpressServer({
+   controllers: [__dirname + "/controllers/*.js"] // we specify controllers we want to use
+});
 
-new Test(2.0).show();
+// run express application on port 3000
+app.listen(5000);

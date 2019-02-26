@@ -1,13 +1,18 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
-        "esModuleInterop": true,
-        "target": "es6",
-        "noImplicitAny": true,
         "moduleResolution": "node",
-        "sourceMap": true,
+        "module": "commonjs", //required for nodejs
+        "esModuleInterop": true, //TypeScript will transform import statements to require statements
+        "target": "es6",
+        "noImplicitAny": true, //enforce strong typing
+        "strict":true, //use-strict
+        "sourceMap": true, //required for ts debugging, generates .map file
         "outDir": "dist",
         "baseUrl": ".",
+        "allowJs": true, //Allow JavaScript files to be compiled.
+        "checkJs": true,
+        "emitDecoratorMetadata": true, //types information (metadata) for reflect-metadata
+        "experimentalDecorators": true,// use decorators es7 feature
         "paths": {
             "*": [
                 "node_modules/*",
@@ -17,5 +22,8 @@
     },
     "include": [
         "src/**/*"
-    ]
+    ],
+    "exclude": [
+        "node_modules"
+      ]
 }
