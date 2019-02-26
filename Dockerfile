@@ -32,9 +32,13 @@ FROM base AS release
 # copy production node_modules
 COPY --from=dependencies /app/prod_node_modules ./node_modules
 COPY --from=dependencies /app/dist ./dist
-COPY --from=dependencies /app/package.json package.json
+
+#clean up test files from production dist
+RUN find ./dist -type f \( -name '*.test.js' -o -name '*.test.js.map' \) -exec rm {} \;
+
 # TODO add exclusion rule for tests
-# expose port and define CMD
 EXPOSE 5000
-CMD npm run serve
+ENV NODE_ENV production
+USER node
+CMD ["node","./dist/server.js"]
 
