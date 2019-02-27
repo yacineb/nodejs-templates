@@ -1,5 +1,7 @@
 # ---- Base Node ----
-FROM node:10-alpine AS base
+ARG NODE_TAG='10-alpine'
+
+FROM node:${NODE_TAG} AS base
 # install node
 RUN apk add --no-cache tini
 WORKDIR /app
@@ -12,14 +14,13 @@ FROM base AS dependencies
 COPY . .
 #for faster install
 # install and copy production node_modules aside
-# install ALL node_modules, including 'devDependencies'
+# then install ALL node_modules, including 'devDependencies'
 RUN npm set progress=false \
     && npm config set depth 0 \
     && npm i --only=production \
     && cp -R node_modules prod_node_modules \
     && npm i
 
-# run tsc transpiler
 RUN npm run build 
 
 # ---- Test ----
@@ -36,9 +37,12 @@ COPY --from=dependencies /app/dist ./dist
 #clean up test files from production dist
 RUN find ./dist -type f \( -name '*.test.js' -o -name '*.test.js.map' \) -exec rm {} \;
 
-# TODO add exclusion rule for tests
+# ports exposed
 EXPOSE 5000
+#node in production
 ENV NODE_ENV production
+#run under 'node' user for security reasons
 USER node
-CMD ["node","./dist/server.js"]
 
+#same as npm run serve but better for Handling Kernel signals
+CMD ["node","./dist/server.js"]
