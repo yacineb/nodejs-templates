@@ -3,7 +3,7 @@ ARG NODE_TAG='10-alpine'
 
 FROM node:${NODE_TAG} AS base
 # install node
-RUN apk add --no-cache tini
+RUN apk add --no-cache tini curl
 WORKDIR /app
 # Set tini as entrypoint
 ENTRYPOINT ["/sbin/tini", "--"]
@@ -43,6 +43,10 @@ EXPOSE 5000
 ENV NODE_ENV production
 #run under 'node' user for security reasons
 USER node
+
+# a custom heathcheck
+HEALTHCHECK --interval=15s --timeout=5s \
+CMD curl -f http://localhost:5000/_health || exit 1
 
 #same as npm run serve but better for Handling Kernel signals
 CMD ["node","./dist/server.js"]

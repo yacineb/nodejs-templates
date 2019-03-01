@@ -103,10 +103,10 @@ With Docker multi-stage build feature, it’s possible to implement an advanced 
 The multi-stage build allows using multiple FROM commands in the same Dockerfile. The last FROM command produces the final Docker image, all other images are intermediate images (no final Docker image is produced, but all layers are cached).
 
 In the example is used 4 stages:
-- Base image stage (node:alpine + tini)
-- Build stage
-- Test stage
-- Release stage
+- Base image (node:alpine + tini)
+- Build
+- Test
+- Release
 
 
 ### Memory & CPU
@@ -117,3 +117,9 @@ By default, any Docker Container may consume as much of the hardware such as CPU
 ``` console
  -m "300M" --memory-swap "1G" 
 ```
+
+### Container HEALTHCHECK
+
+Add a custom and wise heatlhcheck to your container, a good practice for http(s) services is to expose a _health route and probe it. 
+
+This is essential for HA, load balancing, docker daemon built in helthcheck and container orchestration systems : Swarm, K8s.
