@@ -37,16 +37,19 @@ COPY --from=dependencies /app/dist ./dist
 #clean up test files from production dist
 RUN find ./dist -type f \( -name '*.test.js' -o -name '*.test.js.map' \) -exec rm {} \;
 
-# ports exposed
-EXPOSE 5000
+ENV PORT 3000
+CMD echo ${PORT}
 #node in production
 ENV NODE_ENV production
+
+EXPOSE ${PORT}
+
 #run under 'node' user for security reasons
 USER node
 
 # a custom heathcheck
 HEALTHCHECK --interval=15s --timeout=5s \
-CMD curl -f http://localhost:5000/_health || exit 1
+CMD curl -f "http://localhost:${PORT}/_health" || exit 1
 
 #same as npm run serve but better for Handling Kernel signals
 CMD ["node","./dist/server.js"]

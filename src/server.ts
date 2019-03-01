@@ -7,4 +7,4 @@ const app = createExpressServer({
 });
 
 // run express application on port 3000
-app.listen(5000);
+app.listen(3000);

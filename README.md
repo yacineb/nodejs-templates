@@ -125,3 +125,13 @@ These are some considerations:
  `$(git log -1 --format=%h)`
 
  - Beware of docker build cache. If you're not confident with it you can disable it by passing ` --no-cache` to `docker build`
+
+**Use Makefile because it's great**
+
+ In this sample project i've written a Makefile for docker images CI. It support docker image build, tag, push.
+
+ To show supported commands type `make help` or simply `make` in the terminal (currenr directory must be the root project directory)
+
+Make is a build automation tool created in 1976, designed to solve dependency problems of the build process.
+
+It was originally used to get compiled files from source code, for instance for C language. It's really powerful and very generic, it's often used to build "meta commands" and DRY runs.
