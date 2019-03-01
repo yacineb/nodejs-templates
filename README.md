@@ -8,14 +8,6 @@ Vscode has out-of-the-box support for typescript, its command palette, multiple 
 
 > clone this repo then run `npm i` and you're ready to debug in vscode.
 
-## Why typescript ?
-
-- Typescript is javascript that scales. Many university papers prove that Strongly typed language scale better. Very large codebases require Domain structuring and a strong type System
-- It bring the best of the two worlds : dynamic typing (js) and optional static/strong typing.
-- Provides great OOP paradigms, type checking on compile, and advanced js features (>=es7), no need for Babel or any other transpiler.
-- Is a superset of js, it means that any valid js file is still a valid ts file.
-- Offical language in GAFA companies and great support by Microsoft and Google.
-
 ## Project's tree
 
 By convention all of the sources ts,js are put in src folder. dist folder is not tracked by git and it's the build output of typescript.
@@ -123,3 +115,13 @@ By default, any Docker Container may consume as much of the hardware such as CPU
 Add a custom and wise heatlhcheck to your container, a good practice for http(s) services is to expose a _health route and probe it. 
 
 This is essential for HA, load balancing, docker daemon built in helthcheck and container orchestration systems : Swarm, K8s.
+
+
+## CI/CD
+
+These are some considerations:
+
+- Include your git revision as a part of the docker image's tag. this gets the latest git revision (uuid4):
+ `$(git log -1 --format=%h)`
+
+ - Beware of docker build cache. If you're not confident with it you can disable it by passing ` --no-cache` to `docker build`
