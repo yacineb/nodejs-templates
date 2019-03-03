@@ -20,8 +20,8 @@ Above some npm commands:
 - `npm run debug` run/debug the program, watching in background for source code change with incremental/on-the-fly typescript compilation, you're able to directly debug ts in Chrome inspector.
 - `npm run start` runs release distribution
 - `npm run doc` generates html documentation for the project
-- `npm run test` runs unit tests using jest
-- `npm run lint` run linting based on `tslint.json` rules
+- `npm run test` runs unit tests using jest (jest extension for vscode is recommended)
+- `npm run lint` run linting based on `tslint.json` rules (ts-lint extention for vscode is strongly recommended for nice IDE experience)
 - `npm run watch` allows automatically restarting the node application when file changes in the directory are detected, tsc is put in _watch_ mode so that any change to ts file fires compilation in background and restart of node is then done automatically. It's similar to webpack hot reload mode.
 
 For debuggng in vscode it's quite straightforward and debuggng experience is much better than in Chrome. It's the option i prefer
