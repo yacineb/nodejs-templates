@@ -17,11 +17,14 @@ By convention all of the sources ts,js are put in src folder. dist folder is not
 Above some npm commands:
 
 - `npm run clean` cleans output files and node_modules
-- `npm run debug` run/debug the program, watching in background for source code change with incremental/on-the-fly typescript compilation
+- `npm run debug` run/debug the program, watching in background for source code change with incremental/on-the-fly typescript compilation, you're able to directly debug ts in Chrome inspector.
 - `npm run start` runs release distribution
 - `npm run doc` generates html documentation for the project
 - `npm run test` runs unit tests using jest
 - `npm run lint` run linting based on `tslint.json` rules
+- `npm run watch` allows automatically restarting the node application when file changes in the directory are detected, tsc is put in _watch_ mode so that any change to ts file fires compilation in background and restart of node is then done automatically. It's similar to webpack hot reload mode.
+
+For debuggng in vscode it's quite straightforward and debuggng experience is much better than in Chrome. It's the option i prefer
 
 ## Some remarks about tests 
 
@@ -85,7 +88,7 @@ Here some of my recommendations :
 unit test code, dev dependencies, linux packages etc..
 - Reduce docker build context using a wise .dockerignore configuration. This makes docker build faster.
 - Use [Docker bench security](https://github.com/docker/docker-bench-security) to inspect you docker images for production.
-- Never put secrets in build `ARG` or inside dockerfiles, use environment variables or a secured kv store for this purpose (etcd or consul are great..)
+- Never put secrets in build `ARG` or inside dockerfiles, use environment variables or a secured kv store for this purpose (etcd, vault are great for this purpose..)
 
 
 ### use Multistaged docker builds
@@ -116,6 +119,9 @@ Add a custom and wise heatlhcheck to your container, a good practice for http(s)
 
 This is essential for HA, load balancing, docker daemon built in helthcheck and container orchestration systems : Swarm, K8s.
 
+## Data management
+
+containers are immutable, never store data in. You should use named docker volumes.
 
 ## CI/CD
 
