@@ -52,6 +52,25 @@
             "windows": {
               "program": "${workspaceFolder}/node_modules/jest/bin/jest",
             }
-          }
+          },
+
+          {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug TypeScript Server2 in Node.js",
+            "program": "${workspaceFolder}/dist/server2.js",
+            //"preLaunchTask": "build project",
+            "protocol": "inspector", //for node >6 it's better
+            "outFiles": [
+                "${workspaceFolder}/dist/**/*.js"
+            ]
+        },
+
+    ],
+    "compounds": [
+        {
+            "name": "Server/Server2",
+            "configurations": ["Debug TypeScript Server2 in Node.js", "Debug TypeScript in Node.js"]
+        }
     ]
 }
