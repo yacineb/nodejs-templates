@@ -10,11 +10,48 @@
             "request": "launch",
             "name": "Debug TypeScript in Node.js",
             "program": "${workspaceFolder}/dist/server.js",
-            "preLaunchTask": "tsc: build - tsconfig.json",
+            "preLaunchTask": "build project",
             "protocol": "inspector", //for node >6 it's better
             "outFiles": [
                 "${workspaceFolder}/dist/**/*.js"
             ]
-        }
+        },
+
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug Tests",
+            "program": "${workspaceFolder}/node_modules/.bin/jest",
+            "args": ["--runInBand"],
+            "console": "integratedTerminal",
+            "preLaunchTask": "build project",
+            "protocol": "inspector", //for node >6 it's better
+            "internalConsoleOptions": "neverOpen",
+            "envFile": "${workspaceFolder}/test.env",
+            "disableOptimisticBPs": true,
+            "windows": {
+              "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+            }
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug current test file",
+            "program": "${workspaceFolder}/node_modules/.bin/jest",
+            "args": [
+              "${relativeFile}",
+              "--config",
+              "jest.config.js"
+            ],
+            "console": "integratedTerminal",
+            "preLaunchTask": "build project",
+            "protocol": "inspector", //for node >6 it's better
+            "envFile": "${workspaceFolder}/test.env",
+            "internalConsoleOptions": "neverOpen",
+            "disableOptimisticBPs": true,
+            "windows": {
+              "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+            }
+          }
     ]
 }
