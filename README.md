@@ -8,6 +8,14 @@ Vscode has out-of-the-box support for typescript, its command palette, multiple 
 
 > clone this repo then run `npm i` and you're ready to debug in vscode.
 
+## VSCode
+
+Here are some awesome links:
+
+- Best of extensions : <https://github.com/viatsko/awesome-vscode#javascript>
+- Recommended extensions: Debugger for Chrome, Jest, TSLint
+- [Debug VueJs https://fr.vuejs.org/v2/cookbook/debugging-in-vscode.html
+
 ## Project's tree
 
 By convention all of the sources ts,js are put in src folder. dist folder is not tracked by git and it's the build output of typescript.
