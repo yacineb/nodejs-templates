@@ -149,3 +149,39 @@ These are some considerations:
 Make is a build automation tool created in 1976, designed to solve dependency problems of the build process.
 
 It was originally used to get compiled files from source code, for instance for C language. It's really powerful and very generic, it's often used to build "meta commands" and DRY runs.
+
+
+## Performance Tips
+
+### nodejs-related performance tips
+
+- Dont' block the vent loop ! (https://nodejs.org/en/docs/guides/dont-block-the-event-loop/) . Avoid using synchronous code and always prefer async/await over old-style promise-callback. Some nodejs apis are synchronous (compression, filesystem, encryption, child processes) and have expensive overhead, don't use them in production code!
+
+- Don't be afraid to use C++ bindings, or Rust Bindings (neon for exemple) to run CPU-bounded operations. Offloading heavy cpu operations to other 'native' binaries offer a lot of benefits. node is not a golden hammer. Offloading expensive operation to workers api is also a good option to consider.
+
+- GraphQL/apollo are not relevant for application hot paths and heavy traffic. Apollo is known for having performance bottleneck. Parsing Graphql and query execution have significant overhead. Stick with simple RESTful apis. GraphQL does not have any standard security assertion logic, neither easy sanitizing. 
+In some scenarios using a unique api route prevents from benefits of CDN/ caching and prevents form building smart proxies in certain scenarios.
+
+- Use a process manager (pm2) and make sure you have NODE_ENV is set to 'production' in your production environement.
+
+- Avoid using Regexps , and if you use them make sure they are trivial. See RegEx DDOS
+
+- JSON parse/strinify have a known vuls, and can block event loop (large input string can bring down your whole node process).
+
+- Avoid forking child processes in production, this causes a fork bomb. and has expensive memory and cpu overhead.
+
+- Profile regulary your application using tools like 0x (flamegraphs and event loop profiling), implement a monitoring stack (keymetrics.io , prometheus/grafana). These are some KPIs you should track in realtime: CPU, heap memory, GC, event loop lags, number of open handles. outgoing and ingoing bytes. More low level monitoring for containers (cadvisor)
+
+### General purpose
+
+- Small docker images footprint : you should favor Alpine (or Debian buster) for your base images. Alpine OS has a very small foortprint and it's very secure because of it has smaller attack surface. Also make sur you use dependency scanning tools to detect security flaws. You should also reduce you npm dependencies to the minimum. Having smaller docker images improves deployment speed.
+
+- Serialization: use schema-based serialization frameworks (Avro, MsgPack, Protobuf .. ) whenever possible. Those provide many benefits : smaller payloads (more efficient usage of network bandwidth), protection against 'prototype pollution', sanitizing (secure input and data validation). Those serialization frameworks are much faster tha native json serialization.
+
+- N+1 select antipattern: check where you run multiple data/network queries inside of for loops and use bulk-loading, joins, expands as an alternative whenever possible.
+
+- Do regular load testing, stress testing for your platform.
+
+- Data querying : make sur you use a data schema/model which is efficient for querying, you'll always have to do a tradeoff between read and write performance.
+
+- Add distributed tracing: Jeager, zipkin. This is vital for a microservices architecture
